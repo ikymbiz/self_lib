@@ -1,0 +1,27 @@
+# 欠損確認
+tmp = df_9.isnull().sum()
+
+# 可視化
+fig = plt.figure(figsize=(14,2), dpi=600)
+ax = fig.add_subplot(111)
+ax.bar(tmp.index, tmp.values / len(df_9) *100, label='欠損率')
+ax.bar(tmp.index, (len(df_9)-tmp.values) / len(df_9) * 100, bottom=tmp.values/len(df_9)*100, color='gray', alpha=0.15)
+
+ax.set_title('カラムごとの欠損率')
+ax.set_ylabel('欠損率（%）')
+ax.set_xlabel('カラム')
+ax.legend(loc='lower right', bbox_to_anchor=(1,1))
+ax.yaxis.set_major_formatter(plt.FuncFormatter(lambda x, loc: "{:,}".format(int(x))))
+ax.set_xticklabels(tmp.index, rotation=90)
+ax.grid(linestyle='--', alpha=0.4)
+fig.savefig(output_dir_raw/'欠損率_9月_生データ.png', bbox_inches='tight')
+
+
+tmp = pd.DataFrame(
+    {
+    '欠損数' : df_9.isnull().sum().values,
+    '欠損率' : df_9.isnull().sum().values / len(df_9)
+    },index=df_9.columns
+).T
+display(tmp)
+tmp.to_csv(output_dir_data/'df_9_null_raw.csv', encoding='shift_jis')
