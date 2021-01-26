@@ -1,5 +1,6 @@
 import collections
 
+
 def flatten(l):
     '''listを平坦化する\
     agg: list[]\
@@ -14,3 +15,4 @@ def flatten(l):
             yield from flatten(el)
         else:
             yield el
+            

@@ -1,22 +1,78 @@
-import re 
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+"""tr_text
+> .dic_val(word, dictionary)
 
-"""Refference of of tr_text
-class explaination
-zen_han : zenkaku -> hankaku
-tr_areas: replace 丁目/番地/番/号
-tr_company:s
+> .dic_key(word, dictionary)
 
-================================
-# text= "滝野川３丁目"
-# text = tr_text.zen_han(text)
-# tr_text.tr_areas(text)
+> .zen_han(word)
+
+> .tr_areas(address)
+
+> .tr_company(companyName)
+
+Todo:
+
+
 """
-def __init__(self):
-    self=str(self)
-    pass
 
-def zen_han(self):
+import re
+
+def dic_val(word, dictionary):
+    """dic_val(word, dictionary)
+
+    If the part of word is in dictionary key,
+    replace 'word' to dictionary 'value'.
+
+    Args:
+        word (obj): Word to be replaced
+        dictionary (dict): dictionary{key:value}
+
+    Returns:
+       obj: Replaced word by value
+
+    Examples:
+
+    Note:
+
     """
+    for key, value in dictionary.items():
+        if key in word:
+            ret = value
+            break
+        else:
+            ret = "False"
+    return ret
+
+def dic_key(word, dictionary):
+    """dic_key(word, dictionary)
+
+    If the part of word is in dictionary key,
+    replace 'word' to dictionary 'key'.
+
+    Args:
+        word (obj): Word to be replaced
+        dictionary (dict): dictionary{key:value}
+
+    Returns:
+       obj: Replaced word by key
+
+    Examples:
+
+    Note:
+
+    """
+    for key, value in dictionary.items():
+        if value in word:
+            ret = key
+            break
+        else:
+            ret = "False"
+    return ret
+
+
+def zen_han(word):
+    """zen_han(word)
     全角から半角に変換する
     """
     tbl_zen2han = str.maketrans({"１":"1","２":"2","３":"3","４":"4","５":"5","６":"6","７":"7","８":"8","９":"9","０":"0",
@@ -42,17 +98,17 @@ def zen_han(self):
                  "～":"~","｜":"|","、":",","＜":"<","。":".","＞":">",
                  "；":";","：":":","＋":"+","＊":"*",
                  "＠":"@","‘":"`","［":"[","］":"]","？":"?","＿":"_"})
-    return self.translate(tbl_zen2han)
+    return word.translate(tbl_zen2han)
 
-def tr_areas(self):
-    tbl_areas = {"丁目":"-","番地":"-","番":"-","号":""}
-    return re.sub('({})'.format('|'.join(map(re.escape, tbl_areas.keys()))), lambda m: tbl_areas[m.group()], self)
 
-def tr_areas(self):
+def tr_areas(address):
+    """tr_areas(address)
+        tr_areas: replace 丁目/番地/番/号
+    """
     tbl_areas = {"丁目":"-","番地":"-","番":"-","号":";"}
     return re.sub('({})'.format('|'.join(map(re.escape, tbl_areas.keys()))), lambda m: tbl_areas[m.group()], self)
 
-def tr_company(self):
-    tbl_company = {"株式会社":"株","番地":"-","番":"-","号":""}
+def tr_company(companyName):
+    tbl_company = {"株式会社":"株","(株)":"(株)"}
     return re.sub('({})'.format('|'.join(map(re.escape, tbl_company.keys()))), lambda m: tbl_company[m.group()], self)
 
